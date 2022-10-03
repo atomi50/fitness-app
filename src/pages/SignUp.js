@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { app } from "../utils/firebase";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithRedirect,
+} from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
+import GoogleButton from "react-google-button";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,6 +21,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
+const provider = new GoogleAuthProvider();
 
 export default function SignUp() {
   const [email, setEmail] = useState();
@@ -25,6 +32,7 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const auth = getAuth(app);
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
@@ -40,11 +48,11 @@ export default function SignUp() {
           setError(error.code);
         }
       });
-    //   const errorCode = error.code;
-    //   const errorMessage = error.message;
-    //   // ..
-    //   console.log(errorCode + errorMessage);
-    // });
+  };
+
+  const signInWithGoogle = () => {
+    const auth = getAuth(app);
+    signInWithRedirect(auth, provider);
   };
 
   return (
@@ -130,6 +138,7 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
+            <GoogleButton onClick={signInWithGoogle} />
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">

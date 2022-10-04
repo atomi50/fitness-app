@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { app } from "../utils/firebase";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithRedirect,
-} from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth";
-import GoogleButton from "react-google-button";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -21,7 +15,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
-const provider = new GoogleAuthProvider();
 
 export default function SignUp() {
   const [email, setEmail] = useState();
@@ -32,7 +25,6 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const auth = getAuth(app);
-
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
@@ -48,11 +40,6 @@ export default function SignUp() {
           setError(error.code);
         }
       });
-  };
-
-  const signInWithGoogle = () => {
-    const auth = getAuth(app);
-    signInWithRedirect(auth, provider);
   };
 
   return (
@@ -130,15 +117,9 @@ export default function SignUp() {
             >
               {error}
             </Typography>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
               Sign Up
             </Button>
-            <GoogleButton onClick={signInWithGoogle} />
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">

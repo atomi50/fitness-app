@@ -1,6 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { app } from "../utils/firebase";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
+import { GithubAuthProvider } from "firebase/auth";
+import GoogleButton from "react-google-button";
+import GithubButton from "react-github-login-button";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,6 +21,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext";
+import { NavigateNextRounded } from "@mui/icons-material";
 
 const theme = createTheme();
 
@@ -20,6 +30,12 @@ export default function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
+  const { user, setUser } = useContext(UserContext);
+
+  // useContext set logged in as true to render search and login buttons
+
+  const googleProvider = new GoogleAuthProvider();
+  const githubProvider = new GithubAuthProvider();
 
   const navigate = useNavigate();
 
@@ -28,8 +44,9 @@ export default function Login() {
     const auth = getAuth(app);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
+        setUser(() => ({
+          loggedIn: true,
+        }));
         navigate("/");
         // ...
       })
@@ -42,6 +59,28 @@ export default function Login() {
           setError(error.code);
         }
       });
+  };
+
+  // Sign up with Google
+  const signUpWithGoogle = () => {
+    const auth = getAuth(app);
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        console.log(result);
+        setUser(() => ({ loggedIn: true }));
+        navigate("/");
+      })
+      .catch((error) => console.log(error.code));
+  };
+
+  // Sign up with Github
+  const signUpWithGithub = () => {
+    const auth = getAuth(app);
+    signInWithPopup(auth, githubProvider)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => console.log(error.code));
   };
 
   return (
@@ -106,6 +145,10 @@ export default function Login() {
             >
               Log In
             </Button>
+            <div style={{ display: "flex", marginTop: "15px" }}>
+              <GoogleButton onClick={signUpWithGoogle} />
+              <GithubButton onClick={signUpWithGithub} />
+            </div>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/signup" variant="body2">

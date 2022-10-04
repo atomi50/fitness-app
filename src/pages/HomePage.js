@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import ExcerciseCard from "../components/ExerciseCard";
 import { exerciseOptions, fetchData } from "../utils/fetchData";
 

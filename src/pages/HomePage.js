@@ -19,7 +19,7 @@ const MainPage = () => {
 
   return (
     <Grid container columnSpacing={4}>
-      {exercises.map((exercise) => (
+      {exercises.slice(0, 12).map((exercise) => (
         <Grid
           item
           sx={{ backgroundColor: "#0f5970" }}

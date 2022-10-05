@@ -16,6 +16,15 @@ import { SignOutOfApp } from "../utils/logout";
 
 function Header() {
   const { user } = useContext(UserContext);
+  const [search, setSearch] = useState([]);
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      console.log("Enter was pressed");
+    }
+  };
+
+  console.log(search);
 
   return (
     <>
@@ -68,6 +77,11 @@ function Header() {
                   <InputBase
                     sx={{ color: "inherit", pl: "25px" }}
                     placeholder="Search..."
+                    value={search}
+                    onKeyDown={handleSearch}
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                    }}
                   />
                 </Box>
                 <Button

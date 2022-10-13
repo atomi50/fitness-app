@@ -1,13 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import { InputBase } from "@mui/material";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
-import SearchIcon from "@mui/icons-material/Search";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
@@ -16,15 +14,6 @@ import { SignOutOfApp } from "../utils/logout";
 
 function Header() {
   const { user } = useContext(UserContext);
-  const [search, setSearch] = useState([]);
-
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      console.log("Enter was pressed");
-    }
-  };
-
-  console.log(search);
 
   return (
     <>
@@ -40,13 +29,6 @@ function Header() {
               to={"/"}
             >
               <FitnessCenterIcon sx={{ mr: 1 }} />
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ display: { xs: "none", sm: "block" } }}
-              >
-                Atomic Fitness
-              </Typography>
             </IconButton>
             <Box sx={{ flexGrow: "1" }}></Box>
             {user?.loggedIn === true ? (
@@ -61,29 +43,7 @@ function Header() {
                     width: "auto",
                     pr: "10px",
                   }}
-                >
-                  <Box
-                    sx={{
-                      height: "100%",
-                      position: "absolute",
-                      pointerEvents: "none",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <SearchIcon />
-                  </Box>
-                  <InputBase
-                    sx={{ color: "inherit", pl: "25px" }}
-                    placeholder="Search..."
-                    value={search}
-                    onKeyDown={handleSearch}
-                    onChange={(e) => {
-                      setSearch(e.target.value);
-                    }}
-                  />
-                </Box>
+                ></Box>
                 <Button
                   component={Link}
                   to={"/login"}

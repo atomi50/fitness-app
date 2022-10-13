@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import ExcerciseCard from "../components/ExerciseCard";
 import { exerciseOptions, fetchData } from "../utils/fetchData";
+import SearchBar from "../components/SearchBar";
 
 const MainPage = () => {
   const [exercises, setExercises] = useState([]);
@@ -18,20 +19,23 @@ const MainPage = () => {
   }, []);
 
   return (
-    <Grid container columnSpacing={4}>
-      {exercises.slice(0, 12).map((exercise) => (
-        <Grid
-          item
-          sx={{ backgroundColor: "#0f5970" }}
-          xs={12}
-          sm={6}
-          md={4}
-          key={exercise.id}
-        >
-          <ExcerciseCard exercise={exercise} />
-        </Grid>
-      ))}
-    </Grid>
+    <>
+      <SearchBar />
+      <Grid container columnSpacing={4}>
+        {exercises.slice(0, 12).map((exercise) => (
+          <Grid
+            item
+            sx={{ backgroundColor: "#ffffff" }}
+            xs={12}
+            sm={6}
+            md={4}
+            key={exercise.id}
+          >
+            <ExcerciseCard exercise={exercise} />
+          </Grid>
+        ))}
+      </Grid>
+    </>
   );
 };
 
